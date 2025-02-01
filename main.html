@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Voting System</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px 20px;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar a {
+      color: #333;
+      text-decoration: none;
+      font-size: 16px;
+      margin-left: 20px;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .navbar a:hover {
+      color: #6a11cb;
+    }
+
+    .navbar .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #6a11cb;
+    }
+
+    /* Profile Dropdown */
+    .profile-container {
+      position: relative;
+      margin-right: 20px;
+    }
+
+    .profile-icon {
+      cursor: pointer;
+      font-size: 24px;
+      padding: 8px;
+      border-radius: 50%;
+      transition: background 0.3s;
+    }
+
+    .profile-icon:hover {
+      background: rgba(0,0,0,0.1);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      right: 0;
+      top: 40px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: none;
+      width: 160px;
+      z-index: 1000;
+    }
+
+    .profile-dropdown.active {
+      display: block;
+    }
+
+    .profile-dropdown a {
+      display: block;
+      padding: 12px 16px;
+      color: #333;
+      text-decoration: none;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    .profile-dropdown a:hover {
+      background: #f5f5f5;
+    }
+
+    /* Container for Pages */
+    .container {
+      background: #ffffff;
+      width: 90%;
+      max-width: 1200px;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      margin-top: 100px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-size: 32px;
+      color: #6a11cb;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Vote Page */
+    .vote-option {
+      margin: 20px auto;
+      padding: 20px;
+      background: #f4f4f4;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 800px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .vote-option:hover {
+      transform: scale(1.02);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .vote-button {
+      background: #6a11cb;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .vote-button:hover {
+      background: #2575fc;
+    }
+
+    .countdown-timer {
+      font-size: 18px;
+      font-weight: bold;
+      color: #6a11cb;
+      margin-top: 20px;
+    }
+
+    /* Results Page */
+    .results-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .result-bar {
+      width: 100%;
+      max-width: 800px;
+      background: #f4f4f4;
+      border-radius: 10px;
+      margin: 10px 0;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .result-bar span {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .result-bar .progress {
+      height: 20px;
+      background: #6a11cb;
+      border-radius: 5px;
+      transition: width 0.5s ease-in-out;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 50px;
+      text-align: center;
+      color: #fff;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <div class="navbar">
+    <div class="logo">VotePro</div>
+    <div>
+      <a href="#home" id="home-link">Home</a>
+      <a href="#about" id="about-link">About Us</a>
+      <a href="#vote" id="vote-link">Vote</a>
+      <a href="#results" id="results-link">Results</a>
+    </div>
+    <!-- Profile Dropdown -->
+    <div class="profile-container">
+      <span class="profile-icon" onclick="toggleDropdown()">👤</span>
+      <div class="profile-dropdown" id="profile-dropdown">
+        <a href="profile.html" target="_blank">Account</a>
+        <a href="#" onclick="alert('Settings clicked')">Settings</a>
+        <a href="#" onclick="logout()">Logout</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Home Page -->
+  <div id="home" class="container">
+    <h2>Welcome to VotePro</h2>
+    <p>Your trusted platform for secure and transparent online voting. Learn about the candidates below:</p>
+
+    <!-- Candidate Information -->
+    <div class="candidate-card">
+      <img src="https://via.placeholder.com/80" alt="Candidate A" class="candidate-photo">
+      <div class="candidate-info">
+        <div class="candidate-name">Candidate A</div>
+        <div class="candidate-description">A visionary leader with a focus on education and healthcare reform.</div>
+      </div>
+    </div>
+
+    <div class="candidate-card">
+      <img src="https://via.placeholder.com/80" alt="Candidate B" class="candidate-photo">
+      <div class="candidate-info">
+        <div class="candidate-name">Candidate B</div>
+        <div class="candidate-description">An advocate for economic growth and environmental sustainability.</div>
+      </div>
+    </div>
+
+    <div class="candidate-card">
+      <img src="https://via.placeholder.com/80" alt="Candidate C" class="candidate-photo">
+      <div class="candidate-info">
+        <div class="candidate-name">Candidate C</div>
+        <div class="candidate-description">A tech innovator pushing for digital transformation and smart cities.</div>
+      </div>
+    </div>
+
+    <!-- Feedback Section -->
+    <div class="feedback-section">
+      <h3>We Value Your Feedback</h3>
+      <p>Please share your thoughts and suggestions to help us improve our platform:</p>
+
+      <form class="feedback-form" action="#">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Feedback" required></textarea>
+        <button type="submit">Submit Feedback</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- About Us Page -->
+  <div id="about" class="container" style="display: none;">
+    <h2>About Us</h2>
+    <div class="about-content">
+      <p>VotePro is a platform designed to simplify and secure the online voting process. We prioritize transparency, accuracy, and fairness in every election. Our mission is to provide a digital voting experience that everyone can trust and use easily.</p>
+      <p>We aim to make voting accessible to all citizens, offering a seamless experience from registration to final results. With VotePro, voting becomes not only easier but also more reliable, ensuring your voice is heard.</p>
+    </div>
+  </div>
+
+  <!-- Vote Page -->
+  <div id="vote" class="container" style="display: none;">
+    <h2>Cast Your Vote</h2>
+
+    <!-- Voting Options -->
+    <div class="vote-option">
+      <div>Candidate A</div>
+      <button class="vote-button" onclick="vote('Candidate A')">Vote</button>
+    </div>
+
+    <div class="vote-option">
+      <div>Candidate B</div>
+      <button class="vote-button" onclick="vote('Candidate B')">Vote</button>
+    </div>
+
+    <div class="vote-option">
+      <div>Candidate C</div>
+      <button class="vote-button" onclick="vote('Candidate C')">Vote</button>
+    </div>
+
+    <!-- Countdown Timer -->
+    <div class="countdown-timer" id="countdown"></div>
+  </div>
+
+  <!-- Results Page -->
+  <div id="results" class="container" style="display: none;">
+    <h2>Election Results</h2>
+
+    <div class="results-container">
+      <div class="result-bar">
+        <span>Candidate A</span>
+        <div class="progress" id="candidateA-progress" style="width: 50%"></div>
+      </div>
+
+      <div class="result-bar">
+        <span>Candidate B</span>
+        <div class="progress" id="candidateB-progress" style="width: 30%"></div>
+      </div>
+
+      <div class="result-bar">
+        <span>Candidate C</span>
+        <div class="progress" id="candidateC-progress" style="width: 20%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>&copy; 2025 VotePro. All rights reserved.</p>
+  </div>
+
+  <script>
+    // Toggle Profile Dropdown
+    function toggleDropdown() {
+      document.getElementById('profile-dropdown').classList.toggle('active');
+    }
+
+    // Logout Function
+    function logout() {
+      alert("You have logged out.");
+      // Add logout logic here, like clearing cookies/session
+    }
+
+    // Vote Function
+    function vote(candidate) {
+      alert(`You have voted for ${candidate}`);
+      // Implement voting logic here, such as saving the vote in a database
+    }
+
+    // Countdown Timer
+    function startCountdown() {
+      const countdownDate = new Date("Feb 5, 2025 00:00:00").getTime();
+      const countdownElement = document.getElementById('countdown');
+      const interval = setInterval(function() {
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+        if (distance < 0) {
+          clearInterval(interval);
+          countdownElement.innerHTML = "Voting Closed";
+        }
+      }, 1000);
+    }
+
+    // Display the Home Page by default
+    document.getElementById('home-link').addEventListener('click', function() {
+      showPage('home');
+    });
+
+    document.getElementById('about-link').addEventListener('click', function() {
+      showPage('about');
+    });
+
+    document.getElementById('vote-link').addEventListener('click', function() {
+      showPage('vote');
+    });
+
+    document.getElementById('results-link').addEventListener('click', function() {
+      showPage('results');
+    });
+
+    function showPage(page) {
+      document.getElementById('home').style.display = page === 'home' ? 'block' : 'none';
+      document.getElementById('about').style.display = page === 'about' ? 'block' : 'none';
+      document.getElementById('vote').style.display = page === 'vote' ? 'block' : 'none';
+      document.getElementById('results').style.display = page === 'results' ? 'block' : 'none';
+    }
+
+    // Start countdown when the page loads
+    startCountdown();
+  </script>
+</body>
+</html>

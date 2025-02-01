@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Sign-Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #ffffff;
+      color: #333;
+      width: 350px;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #6a11cb;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .btn {
+      background: #6a11cb;
+      color: #fff;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background: #2575fc;
+    }
+
+    .toggle-link {
+      font-size: 14px;
+      color: #6a11cb;
+      text-decoration: none;
+      cursor: pointer;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .toggle-link:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+    }
+
+    .forgot-password-link {
+      font-size: 14px;
+      color: #6a11cb;
+      text-decoration: none;
+      display: block;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .forgot-password-link:hover {
+      text-decoration: underline;
+    }
+
+    #otp-section, #reset-section {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="form-title">Login</h2>
+    <form id="auth-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group" id="password-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required>
+      </div>
+      <p id="error-message" class="error"></p>
+      <button type="submit" class="btn">Submit</button>
+      <a class="toggle-link" id="toggle-link">Don’t have an account? Sign Up</a>
+      <a class="forgot-password-link" id="forgot-password-link">Forgot password?</a>
+    </form>
+
+    <!-- OTP Section for password reset -->
+    <div id="otp-section">
+      <h3>Enter OTP</h3>
+      <input type="text" id="otp-input" placeholder="Enter OTP" required>
+      <button id="verify-otp" class="btn">Verify OTP</button>
+      <p id="otp-error" class="error"></p>
+    </div>
+
+    <!-- Reset password section -->
+    <div id="reset-section">
+      <h3>Reset Password</h3>
+      <input type="password" id="new-password" placeholder="Enter new password" required>
+      <button id="reset-password" class="btn">Reset Password</button>
+      <p id="reset-error" class="error"></p>
+    </div>
+  </div>
+
+  <script>
+    const formTitle = document.getElementById("form-title");
+    const toggleLink = document.getElementById("toggle-link");
+    const authForm = document.getElementById("auth-form");
+    const errorMessage = document.getElementById("error-message");
+    const forgotPasswordLink = document.getElementById("forgot-password-link");
+    const otpSection = document.getElementById("otp-section");
+    const resetSection = document.getElementById("reset-section");
+    const otpInput = document.getElementById("otp-input");
+    const otpError = document.getElementById("otp-error");
+    const newPasswordInput = document.getElementById("new-password");
+    const resetError = document.getElementById("reset-error");
+    const verifyOtpButton = document.getElementById("verify-otp");
+    const resetPasswordButton = document.getElementById("reset-password");
+
+    let isSignUp = false;
+    let tempOtp = null; // Will store OTP for verification
+
+    // Toggle between Login and Sign-Up
+    toggleLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      isSignUp = !isSignUp;
+      formTitle.textContent = isSignUp ? "Sign Up" : "Login";
+      toggleLink.textContent = isSignUp
+        ? "Already have an account? Login"
+        : "Don’t have an account? Sign Up";
+      errorMessage.textContent = "";
+    });
+
+    // Handle form submission for Login/Signup
+    authForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      if (isSignUp) {
+        if (localStorage.getItem(email)) {
+          errorMessage.textContent = "User already exists. Please login.";
+        } else {
+          localStorage.setItem(email, password);
+          errorMessage.textContent = "Sign-up successful. Please login.";
+          isSignUp = false;
+          formTitle.textContent = "Login";
+          toggleLink.textContent = "Don’t have an account? Sign Up";
+        }
+      } else {
+        const storedPassword = localStorage.getItem(email);
+        if (storedPassword && storedPassword === password) {
+          errorMessage.textContent = "";
+          localStorage.setItem('userEmail', email); // Store email to simulate login
+          window.location.href = "main.html"; // Redirect to main page
+        } else {
+          errorMessage.textContent = "Invalid email or password.";
+        }
+      }
+    });
+
+    // Forgot Password logic
+    forgotPasswordLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+
+      if (!email) {
+        errorMessage.textContent = "Please enter your email.";
+        return;
+      }
+
+      if (localStorage.getItem(email)) {
+        // Simulate sending OTP by generating a random number
+        tempOtp = Math.floor(1000 + Math.random() * 9000); // Generate a 4-digit OTP
+        alert(`An OTP has been sent to your email: ${tempOtp}`); // Simulating OTP sent to email
+
+        authForm.style.display = "none"; // Hide the login form
+        otpSection.style.display = "block"; // Show OTP input section
+      } else {
+        errorMessage.textContent = "User not found.";
+      }
+    });
+
+    // OTP Verification
+    verifyOtpButton.addEventListener("click", () => {
+      const enteredOtp = otpInput.value;
+
+      if (enteredOtp == tempOtp) {
+        otpError.textContent = "";
+        otpSection.style.display = "none";
+        resetSection.style.display = "block"; // Show reset password section
+      } else {
+        otpError.textContent = "Invalid OTP. Please try again.";
+      }
+    });
+
+    // Reset Password Logic
+    resetPasswordButton.addEventListener("click", () => {
+      const newPassword = newPasswordInput.value;
+      const email = document.getElementById("email").value;
+
+      if (newPassword && email) {
+        localStorage.setItem(email, newPassword); // Update password in localStorage
+        resetError.textContent = "";
+        alert("Password reset successful. You can now log in with your new password.");
+        window.location.href = "login.html"; // Redirect back to login page
+      } else {
+        resetError.textContent = "Please enter a new password.";
+      }
+    });
+  </script>
+</body>
+</html>
