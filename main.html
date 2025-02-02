@@ -211,13 +211,14 @@
     }
 
     .result-bar .progress {
-      height: 25px;
-      background: linear-gradient(90deg, #6a11cb, #2575fc);
-      border-radius: 12px;
-      transition: width 1s ease-in-out;
-      margin: 0 20px;
-      flex-grow: 1;
-    }
+  height: 25px;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  border-radius: 12px;
+  transition: width 1s ease-in-out;
+  margin: 0 20px;
+  flex-grow: 0; /* Changed from 1 to 0 */
+  width: 0%; /* Initial width */
+}
 
     /* Feedback Section */
     .feedback-container {
@@ -438,54 +439,54 @@
 
   <!-- Results Page -->
 <div id="results" class="container" style="display: none;">
-    <h2>Election Results</h2>
-  
-    <div class="results-container">
-      <div class="result-bar">
-        <span>Candidate A</span>
-        <div class="progress" id="candidateA-progress" style="width: 0%"></div>
-        <p id="candidateA-votes">0 votes (0%)</p>
-      </div>
-  
-      <div class="result-bar">
-        <span>Candidate B</span>
-        <div class="progress" id="candidateB-progress" style="width: 0%"></div>
-        <p id="candidateB-votes">0 votes (0%)</p>
-      </div>
-  
-      <div class="result-bar">
-        <span>Candidate C</span>
-        <div class="progress" id="candidateC-progress" style="width: 0%"></div>
-        <p id="candidateC-votes">0 votes (0%)</p>
-      </div>
+  <h2>Election Results</h2>
+  <div class="results-container">
+    <div class="result-bar">
+      <span>Candidate A</span>
+      <div class="progress" id="candidateA-progress"></div>
+      <p id="candidateA-votes">0 votes (0%)</p>
+    </div>
+    <div class="result-bar">
+      <span>Candidate B</span>
+      <div class="progress" id="candidateB-progress"></div>
+      <p id="candidateB-votes">0 votes (0%)</p>
+    </div>
+    <div class="result-bar">
+      <span>Candidate C</span>
+      <div class="progress" id="candidateC-progress"></div>
+      <p id="candidateC-votes">0 votes (0%)</p>
     </div>
   </div>
+</div>
+
+<script>
+  /// Initialize vote counts
+let votesA = 0, votesB = 0, votesC = 0;
+
+function updateResults(candidate) {
+  // Increment votes for the selected candidate
+  if (candidate === 'Candidate A') votesA++;
+  else if (candidate === 'Candidate B') votesB++;
+  else if (candidate === 'Candidate C') votesC++;
+
+  // Calculate total votes
+  const totalVotes = votesA + votesB + votesC;
+
+  // Update all progress bars
+  updateCandidateProgress('candidateA-progress', 'candidateA-votes', votesA, totalVotes);
+  updateCandidateProgress('candidateB-progress', 'candidateB-votes', votesB, totalVotes);
+  updateCandidateProgress('candidateC-progress', 'candidateC-votes', votesC, totalVotes);
+}
+
+function updateCandidateProgress(progressId, votesId, votes, total) {
+  const percentage = total === 0 ? 0 : (votes / total) * 100;
+  const progressBar = document.getElementById(progressId);
+  const votesElement = document.getElementById(votesId);
   
-  <script>
-    // ...
-  
-    // Update Results (Simulated)
-    function updateResults(candidate) {
-      // Simulate updating the results
-      const progressBars = {
-        "Candidate A": "candidateA-progress",
-        "Candidate B": "candidateB-progress",
-        "Candidate C": "candidateC-progress",
-      };
-  
-      const progressBar = document.getElementById(progressBars[candidate]);
-      if (progressBar) {
-        const currentWidth = parseFloat(progressBar.style.width) || 0;
-        const totalVotes = 3; // Assuming 3 candidates
-        const votes = parseInt(document.getElementById(`${candidate.replace(' ', '').toLowerCase()}-votes`).textContent.split(' ')[0]) + 1;
-        const percentage = (votes / totalVotes) * 100;
-        progressBar.style.width = `${percentage}%`; // Update the progress bar width
-  
-        const votesElement = document.getElementById(`${candidate.replace(' ', '').toLowerCase()}-votes`);
-        votesElement.textContent = `${votes} votes (${percentage.toFixed(2)}%)`;
-      }
-    }
-  </script>
+  progressBar.style.width = `${percentage}%`;
+  votesElement.textContent = `${votes} vote${votes !== 1 ? 's' : ''} (${percentage.toFixed(1)}%)`;
+}
+</script>
 
   <!-- Feedback Page -->
   <div id="feedback" class="container" style="display: none;">
@@ -567,27 +568,35 @@
       });
     }
 
-    // Update Results (Simulated)
-  function updateResults(candidate) {
-    // Simulate updating the results
-    const progressBars = {
-      "Candidate A": "candidateA-progress",
-      "Candidate B": "candidateB-progress",
-      "Candidate C": "candidateC-progress",
-    };
+     // Update Results (Fixed)
+    function updateResults(candidate) {
+      // Get current votes for all candidates
+      let votesA = parseInt(document.getElementById('candidateA-votes').textContent.split(' ')[0]);
+      let votesB = parseInt(document.getElementById('candidateB-votes').textContent.split(' ')[0]);
+      let votesC = parseInt(document.getElementById('candidateC-votes').textContent.split(' ')[0]);
 
-    const progressBar = document.getElementById(progressBars[candidate]);
-    if (progressBar) {
-      const currentWidth = parseFloat(progressBar.style.width) || 0;
-      const totalVotes = 3; // Assuming 3 candidates
-      const votes = parseInt(document.getElementById(`${candidate.replace(' ', '').toLowerCase()}-votes`).textContent.split(' ')[0]) + 1;
-      const percentage = (votes / totalVotes) * 100;
-      progressBar.style.width = `${percentage}%`; // Update the progress bar width
+      // Increment the voted candidate
+      if (candidate === 'Candidate A') votesA++;
+      else if (candidate === 'Candidate B') votesB++;
+      else if (candidate === 'Candidate C') votesC++;
 
-      const votesElement = document.getElementById(`${candidate.replace(' ', '').toLowerCase()}-votes`);
-      votesElement.textContent = `${votes} votes (${percentage.toFixed(2)}%)`;
+      // Calculate total votes
+      const totalVotes = votesA + votesB + votesC;
+
+      // Update all candidates' progress bars and percentages
+      updateCandidateProgress('candidateA-progress', 'candidateA-votes', votesA, totalVotes);
+      updateCandidateProgress('candidateB-progress', 'candidateB-votes', votesB, totalVotes);
+      updateCandidateProgress('candidateC-progress', 'candidateC-votes', votesC, totalVotes);
     }
-  }
+
+    function updateCandidateProgress(progressId, votesId, votes, total) {
+      const percentage = total === 0 ? 0 : (votes / total) * 100;
+      const progressBar = document.getElementById(progressId);
+      const votesElement = document.getElementById(votesId);
+      
+      progressBar.style.width = `${percentage}%`;
+      votesElement.textContent = `${votes} vote${votes !== 1 ? 's' : ''} (${percentage.toFixed(1)}%)`;
+    }
 
 
     // Accept Terms and Conditions
