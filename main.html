@@ -21,7 +21,7 @@
     /* Navigation Bar */
     .navbar {
       width: 100%;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       padding: 15px 20px;
       color: #333;
       display: flex;
@@ -30,26 +30,40 @@
       position: fixed;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
     }
 
     .navbar a {
       color: #333;
       text-decoration: none;
       font-size: 16px;
-      margin-left: 20px;
-      font-weight: 500;
-      transition: color 0.3s;
+      margin-left: 30px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
     }
 
-    .navbar a:hover {
-      color: #6a11cb;
+    .navbar a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #6a11cb;
+      transition: width 0.3s ease;
+    }
+
+    .navbar a:hover::after {
+      width: 100%;
     }
 
     .navbar .logo {
-      font-size: 24px;
-      font-weight: bold;
+      font-size: 28px;
+      font-weight: 800;
       color: #6a11cb;
+      letter-spacing: 1px;
     }
 
     /* Profile Dropdown */
@@ -101,23 +115,30 @@
 
     /* Container for Pages */
     .container {
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.95);
       width: 90%;
       max-width: 1200px;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       margin-top: 100px;
-      animation: fadeIn 1s ease-in-out;
+      animation: fadeInUp 0.8s ease-out;
+      backdrop-filter: blur(10px);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     h2 {
-      font-size: 32px;
+      font-size: 36px;
       color: #6a11cb;
       margin-bottom: 20px;
       text-align: center;
@@ -125,21 +146,22 @@
 
     /* Vote Page */
     .vote-option {
-      margin: 20px auto;
-      padding: 20px;
-      background: #f4f4f4;
-      border-radius: 10px;
+      margin: 25px auto;
+      padding: 25px;
+      background: white;
+      border-radius: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
       max-width: 800px;
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     .vote-option:hover {
-      transform: scale(1.02);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     }
 
     .vote-button {
@@ -174,13 +196,13 @@
     .result-bar {
       width: 100%;
       max-width: 800px;
-      background: #f4f4f4;
-      border-radius: 10px;
-      margin: 10px 0;
-      padding: 15px;
+      background: white;
+      border-radius: 15px;
+      margin: 15px 0;
+      padding: 20px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     .result-bar span {
@@ -189,10 +211,120 @@
     }
 
     .result-bar .progress {
-      height: 20px;
-      background: #6a11cb;
-      border-radius: 5px;
-      transition: width 0.5s ease-in-out;
+      height: 25px;
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      border-radius: 12px;
+      transition: width 1s ease-in-out;
+      margin: 0 20px;
+      flex-grow: 1;
+    }
+
+    /* Feedback Section */
+    .feedback-container {
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: white;
+      padding: 40px;
+      border-radius: 20px;
+      margin: 40px -40px -40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .feedback-form {
+      display: grid;
+      grid-gap: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .feedback-form input,
+    .feedback-form textarea {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      background: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s ease;
+    }
+
+    .feedback-form input:focus,
+    .feedback-form textarea:focus {
+      background: white;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.3);
+    }
+
+    .feedback-form button {
+      background: white;
+      color: #6a11cb;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .feedback-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Candidate Cards */
+    .candidate-card {
+      display: flex;
+      align-items: center;
+      padding: 25px;
+      margin: 20px 0;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: cardEntry 0.6s ease forwards;
+    }
+
+    .candidate-card:nth-child(2) { animation-delay: 0.2s; }
+    .candidate-card:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes cardEntry {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .candidate-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .candidate-photo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-right: 25px;
+      object-fit: cover;
+      border: 3px solid #6a11cb;
+    }
+
+    .candidate-info {
+      flex: 1;
+    }
+
+    .candidate-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: #6a11cb;
+      margin-bottom: 8px;
+    }
+
+    .candidate-description {
+      font-size: 16px;
+      color: #666;
+      line-height: 1.6;
     }
 
     /* Footer */
@@ -213,6 +345,7 @@
       <a href="#about" id="about-link">About Us</a>
       <a href="#vote" id="vote-link">Vote</a>
       <a href="#results" id="results-link">Results</a>
+      <a href="#feedback" id="feedback-link">Feedback</a>
     </div>
     <!-- Profile Dropdown -->
     <div class="profile-container">
@@ -231,41 +364,30 @@
     <p>Your trusted platform for secure and transparent online voting. Learn about the candidates below:</p>
 
     <!-- Candidate Information -->
-    <div class="candidate-card">
-      <img src="https://via.placeholder.com/80" alt="Candidate A" class="candidate-photo">
-      <div class="candidate-info">
-        <div class="candidate-name">Candidate A</div>
-        <div class="candidate-description">A visionary leader with a focus on education and healthcare reform.</div>
+    <div class="candidates-grid">
+      <div class="candidate-card">
+        <img src="https://via.placeholder.com/100" alt="Candidate A" class="candidate-photo">
+        <div class="candidate-info">
+          <div class="candidate-name">Candidate A</div>
+          <div class="candidate-description">A visionary leader with a focus on education and healthcare reform.</div>
+        </div>
       </div>
-    </div>
 
-    <div class="candidate-card">
-      <img src="https://via.placeholder.com/80" alt="Candidate B" class="candidate-photo">
-      <div class="candidate-info">
-        <div class="candidate-name">Candidate B</div>
-        <div class="candidate-description">An advocate for economic growth and environmental sustainability.</div>
+      <div class="candidate-card">
+        <img src="https://via.placeholder.com/100" alt="Candidate B" class="candidate-photo">
+        <div class="candidate-info">
+          <div class="candidate-name">Candidate B</div>
+          <div class="candidate-description">An advocate for economic growth and environmental sustainability.</div>
+        </div>
       </div>
-    </div>
 
-    <div class="candidate-card">
-      <img src="https://via.placeholder.com/80" alt="Candidate C" class="candidate-photo">
-      <div class="candidate-info">
-        <div class="candidate-name">Candidate C</div>
-        <div class="candidate-description">A tech innovator pushing for digital transformation and smart cities.</div>
+      <div class="candidate-card">
+        <img src="https://via.placeholder.com/100" alt="Candidate C" class="candidate-photo">
+        <div class="candidate-info">
+          <div class="candidate-name">Candidate C</div>
+          <div class="candidate-description">A tech innovator pushing for digital transformation and smart cities.</div>
+        </div>
       </div>
-    </div>
-
-    <!-- Feedback Section -->
-    <div class="feedback-section">
-      <h3>We Value Your Feedback</h3>
-      <p>Please share your thoughts and suggestions to help us improve our platform:</p>
-
-      <form class="feedback-form" action="#">
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Your Email" required>
-        <textarea placeholder="Your Feedback" required></textarea>
-        <button type="submit">Submit Feedback</button>
-      </form>
     </div>
   </div>
 
@@ -282,44 +404,103 @@
   <div id="vote" class="container" style="display: none;">
     <h2>Cast Your Vote</h2>
 
+    <!-- Terms and Conditions -->
+    <div id="terms-and-conditions" style="display: block;">
+      <p>Please read and accept the terms and conditions of online voting:</p>
+      <p>By casting your vote, you acknowledge that you have read and understood the terms and conditions of online voting.</p>
+      <p>You have only one vote, and once you cast your vote, it cannot be changed.</p>
+      <button id="accept-terms" onclick="acceptTerms()">Accept Terms and Conditions</button>
+    </div>
+
     <!-- Voting Options -->
-    <div class="vote-option">
-      <div>Candidate A</div>
-      <button class="vote-button" onclick="vote('Candidate A')">Vote</button>
-    </div>
+    <div id="voting-options" style="display: none;">
+      <p id="countdown-to-vote"></p>
+      <div class="vote-option">
+        <div>Candidate A</div>
+        <button class="vote-button" onclick="vote('Candidate A')" disabled>Vote</button>
+      </div>
 
-    <div class="vote-option">
-      <div>Candidate B</div>
-      <button class="vote-button" onclick="vote('Candidate B')">Vote</button>
-    </div>
+      <div class="vote-option">
+        <div>Candidate B</div>
+        <button class="vote-button" onclick="vote('Candidate B')" disabled>Vote</button>
+      </div>
 
-    <div class="vote-option">
-      <div>Candidate C</div>
-      <button class="vote-button" onclick="vote('Candidate C')">Vote</button>
-    </div>
+      <div class="vote-option">
+        <div>Candidate C</div>
+        <button class="vote-button" onclick="vote('Candidate C')" disabled>Vote</button>
+      </div>
 
-    <!-- Countdown Timer -->
-    <div class="countdown-timer" id="countdown"></div>
+      <!-- Countdown Timer -->
+      <div class="countdown-timer" id="countdown"></div>
+      <p id="countdown-message"></p>
+    </div>
   </div>
 
   <!-- Results Page -->
-  <div id="results" class="container" style="display: none;">
+<div id="results" class="container" style="display: none;">
     <h2>Election Results</h2>
-
+  
     <div class="results-container">
       <div class="result-bar">
         <span>Candidate A</span>
-        <div class="progress" id="candidateA-progress" style="width: 50%"></div>
+        <div class="progress" id="candidateA-progress" style="width: 0%"></div>
+        <p id="candidateA-votes">0 votes (0%)</p>
       </div>
-
+  
       <div class="result-bar">
         <span>Candidate B</span>
-        <div class="progress" id="candidateB-progress" style="width: 30%"></div>
+        <div class="progress" id="candidateB-progress" style="width: 0%"></div>
+        <p id="candidateB-votes">0 votes (0%)</p>
       </div>
-
+  
       <div class="result-bar">
         <span>Candidate C</span>
-        <div class="progress" id="candidateC-progress" style="width: 20%"></div>
+        <div class="progress" id="candidateC-progress" style="width: 0%"></div>
+        <p id="candidateC-votes">0 votes (0%)</p>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // ...
+  
+    // Update Results (Simulated)
+    function updateResults(candidate) {
+      // Simulate updating the results
+      const progressBars = {
+        "Candidate A": "candidateA-progress",
+        "Candidate B": "candidateB-progress",
+        "Candidate C": "candidateC-progress",
+      };
+  
+      const progressBar = document.getElementById(progressBars[candidate]);
+      if (progressBar) {
+        const currentWidth = parseFloat(progressBar.style.width) || 0;
+        const totalVotes = 3; // Assuming 3 candidates
+        const votes = parseInt(document.getElementById(`${candidate.replace(' ', '').toLowerCase()}-votes`).textContent.split(' ')[0]) + 1;
+        const percentage = (votes / totalVotes) * 100;
+        progressBar.style.width = `${percentage}%`; // Update the progress bar width
+  
+        const votesElement = document.getElementById(`${candidate.replace(' ', '').toLowerCase()}-votes`);
+        votesElement.textContent = `${votes} votes (${percentage.toFixed(2)}%)`;
+      }
+    }
+  </script>
+
+  <!-- Feedback Page -->
+  <div id="feedback" class="container" style="display: none;">
+    <h2>Feedback</h2>
+    <div class="feedback-section">
+      <h3>We Value Your Feedback</h3>
+      <p>Please share your thoughts and suggestions to help us improve our platform:</p>
+
+      <div class="feedback-container">
+        <form class="feedback-form">
+          <input type="text" placeholder="Your Name" required>
+          <input type="email" placeholder="Your Email" required>
+          <textarea placeholder="Your Feedback" required></textarea>
+          <button type="submit">Submit Feedback</button>
+        </form>
       </div>
     </div>
   </div>
@@ -342,59 +523,124 @@
     }
 
     // Vote Function
+    let userVote = null; // Track the user's current vote
+    let timerInterval; // To manage the countdown timer
+
     function vote(candidate) {
-      alert(`You have voted for ${candidate}`);
-      // Implement voting logic here, such as saving the vote in a database
+      userVote = candidate; // Update the user's current vote
+      alert(`You have selected ${candidate}. You can change your vote before the timer runs out.`);
     }
 
-    // Countdown Timer
+    // Countdown Timer (10 seconds)
     function startCountdown() {
-      const countdownDate = new Date("Feb 5, 2025 00:00:00").getTime();
+      let timeLeft = 10; // 10 seconds countdown
       const countdownElement = document.getElementById('countdown');
-      const interval = setInterval(function() {
-        const now = new Date().getTime();
-        const distance = countdownDate - now;
+      countdownElement.innerHTML = `${timeLeft}s`;
+      const countdownMessageElement = document.getElementById('countdown-message');
+      countdownMessageElement.innerHTML = 'Please cast your vote before the timer runs out!';
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      timerInterval = setInterval(function () {
+        timeLeft--;
+        countdownElement.innerHTML = `${timeLeft}s`;
 
-        countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-        if (distance < 0) {
-          clearInterval(interval);
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
           countdownElement.innerHTML = "Voting Closed";
+          countdownMessageElement.innerHTML = '';
+          finalizeVote(); // Finalize the vote when the timer runs out
+        }
+      }, 1000); // Update every second
+    }
+
+    // Finalize the vote
+    function finalizeVote() {
+      if (userVote) {
+        alert(`Your final vote has been cast for ${userVote}.`);
+        // Send the final vote to the server or update the results
+        updateResults(userVote);
+      } else {
+        alert("You did not cast a vote.");
+      }
+      // Disable voting buttons after the timer runs out
+      document.querySelectorAll('.vote-button').forEach(button => {
+        button.disabled = true;
+      });
+    }
+
+    // Update Results (Simulated)
+  function updateResults(candidate) {
+    // Simulate updating the results
+    const progressBars = {
+      "Candidate A": "candidateA-progress",
+      "Candidate B": "candidateB-progress",
+      "Candidate C": "candidateC-progress",
+    };
+
+    const progressBar = document.getElementById(progressBars[candidate]);
+    if (progressBar) {
+      const currentWidth = parseFloat(progressBar.style.width) || 0;
+      const totalVotes = 3; // Assuming 3 candidates
+      const votes = parseInt(document.getElementById(`${candidate.replace(' ', '').toLowerCase()}-votes`).textContent.split(' ')[0]) + 1;
+      const percentage = (votes / totalVotes) * 100;
+      progressBar.style.width = `${percentage}%`; // Update the progress bar width
+
+      const votesElement = document.getElementById(`${candidate.replace(' ', '').toLowerCase()}-votes`);
+      votesElement.textContent = `${votes} votes (${percentage.toFixed(2)}%)`;
+    }
+  }
+
+
+    // Accept Terms and Conditions
+    function acceptTerms() {
+      document.getElementById('terms-and-conditions').style.display = 'none';
+      document.getElementById('voting-options').style.display = 'block';
+
+      let countdownToVote = 5;
+      const countdownToVoteElement = document.getElementById('countdown-to-vote');
+      countdownToVoteElement.innerHTML = `You can vote in ${countdownToVote} seconds`;
+
+      const interval = setInterval(function() {
+        countdownToVote--;
+        countdownToVoteElement.innerHTML = `You can vote in ${countdownToVote} seconds`;
+
+        if (countdownToVote <= 0) {
+          clearInterval(interval);
+          countdownToVoteElement.innerHTML = 'Voting Started!';
+          document.querySelectorAll('.vote-button').forEach(button => {
+            button.disabled = false;
+          });
+          startCountdown();
         }
       }, 1000);
     }
 
     // Display the Home Page by default
-    document.getElementById('home-link').addEventListener('click', function() {
+    document.getElementById('home-link').addEventListener('click', function () {
       showPage('home');
     });
 
-    document.getElementById('about-link').addEventListener('click', function() {
+    document.getElementById('about-link').addEventListener('click', function () {
       showPage('about');
     });
 
-    document.getElementById('vote-link').addEventListener('click', function() {
+    document.getElementById('vote-link').addEventListener('click', function () {
       showPage('vote');
     });
 
-    document.getElementById('results-link').addEventListener('click', function() {
+    document.getElementById('results-link').addEventListener('click', function () {
       showPage('results');
     });
 
-    function showPage(page) {
-      document.getElementById('home').style.display = page === 'home' ? 'block' : 'none';
-      document.getElementById('about').style.display = page === 'about' ? 'block' : 'none';
-      document.getElementById('vote').style.display = page === 'vote' ? 'block' : 'none';
-      document.getElementById('results').style.display = page === 'results' ? 'block' : 'none';
-    }
+    document.getElementById('feedback-link').addEventListener('click', function () {
+      showPage('feedback');
+    });
 
-    // Start countdown when the page loads
-    startCountdown();
+    function showPage(page) {
+      const pages = ['home', 'about', 'vote', 'results', 'feedback'];
+      pages.forEach(p => {
+        document.getElementById(p).style.display = p === page ? 'block' : 'none';
+      });
+    }
   </script>
 </body>
 </html>
